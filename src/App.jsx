@@ -16,6 +16,24 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contactsFromLocalStorage =
+      JSON.parse(localStorage.getItem('contactsList')) || 0;
+
+    if (contactsFromLocalStorage.length === 0) {
+      this.setState({ contacts: contactsFromLocalStorage });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const prevStateContacts = prevState.contacts;
+    const nextStateContacts = this.state.contacts;
+
+    if (prevStateContacts !== nextStateContacts) {
+      localStorage.setItem('contactsList', JSON.stringify(nextStateContacts));
+    }
+  }
+
   onSubmit = ({ name, number }) => {
     console.log(number);
     const id = nanoid();
