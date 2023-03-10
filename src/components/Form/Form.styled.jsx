@@ -33,4 +33,5 @@ export const SubmitBtn = styled.button`
     background: linear-gradient(45deg, #3b3b7a, #91617e);
     color: #d3d3d3;
     background-size: cover;
+  }
 `;
