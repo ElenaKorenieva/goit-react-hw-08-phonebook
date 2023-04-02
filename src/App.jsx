@@ -1,86 +1,72 @@
 import { Form } from 'components/Form';
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { FilteredItem } from 'components/FilteredItem';
 import { ContactsList } from 'components/ContactsList';
 import { Container } from 'App.styled';
 
-export class App extends Component {
-  state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
+const defaultContacts = [
+  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+];
+
+export const App = () => {
+  const [contacts, setContacts] = useState(() => {
+    const localStoregeContacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(localStoregeContacts);
+    return parsedContacts && parsedContacts.length
+      ? parsedContacts
+      : defaultContacts;
+  });
+
+  const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
+
+  const handleChange = e => {
+    const { value } = e.target;
+    setFilter(value);
   };
 
-  componentDidMount() {
-    const contactsFromLocalStorage =
-      JSON.parse(localStorage.getItem('contactsList')) || 0;
-
-    if (contactsFromLocalStorage.length === 0) {
-      this.setState({ contacts: contactsFromLocalStorage });
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const prevStateContacts = prevState.contacts;
-    const nextStateContacts = this.state.contacts;
-
-    if (prevStateContacts !== nextStateContacts) {
-      localStorage.setItem('contactsList', JSON.stringify(nextStateContacts));
-    }
-  }
-
-  onSubmit = ({ name, number }) => {
-    console.log(number);
+  const handleSubmit = e => {
     const id = nanoid();
-    const contactLists = [...this.state.contacts];
+    const name = e.name;
+    const number = e.number;
+    const contactsLists = [...contacts];
 
-    if (contactLists.findIndex(contact => name === contact.name) !== -1) {
-      alert`${name} is already in the contacts.`;
-      return;
+    if (contactsLists.findIndex(contact => name === contact.name) !== -1) {
+      alert(`${name} is already in contacts.`);
+    } else {
+      contactsLists.push({ id, name, number });
     }
-    contactLists.push({ name, id, number });
-    this.setState({ contacts: contactLists });
+
+    setContacts(contactsLists);
   };
 
-  onhandleChange = event => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+  const handleDelete = e => {
+    setContacts(contacts.filter(contact => contact.id !== e));
   };
 
-  onDelete = id => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== id),
-    }));
-  };
-
-  onFilteredContacts = () => {
-    const filterContactsList = this.state.contacts.filter(contact => {
-      return contact.name
-        .toLowerCase()
-        .includes(this.state.filter.toLowerCase());
+  const getFilteredContacts = () => {
+    const filterContactsList = contacts.filter(contact => {
+      return contact.name.toLowerCase().includes(filter.toLowerCase());
     });
-
     return filterContactsList;
   };
-
-  render() {
-    const { filter } = this.state;
-    return (
-      <Container>
-        <h1>Phonebook</h1>
-        <Form handleSubmit={this.onSubmit} />
-        <h2> Contacts</h2>
-        <FilteredItem filter={filter} onhandleChange={this.onhandleChange} />
-        <ContactsList
-          contacts={this.onFilteredContacts()}
-          onDelete={this.onDelete}
-        />
-      </Container>
-    );
-  }
-}
+  return (
+    <Container>
+      <h1>Phonebook</h1>
+      <Form handleSubmit={handleSubmit} />
+      <h2> Contacts</h2>
+      <FilteredItem filter={filter} handleChange={handleChange} />
+      <ContactsList
+        contacts={getFilteredContacts()}
+        handleDelete={handleDelete}
+      />
+    </Container>
+  );
+};

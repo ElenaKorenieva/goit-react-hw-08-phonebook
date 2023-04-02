@@ -5,7 +5,7 @@ import {
   StyledDeleteButton,
 } from './ContactsList.styled';
 
-export const ContactsList = ({ contacts, onDelete }) => (
+export const ContactsList = ({ contacts, handleDelete }) => (
   <div>
     <StyledContactsList>
       {contacts.map((contact, id) => (
@@ -13,7 +13,7 @@ export const ContactsList = ({ contacts, onDelete }) => (
           {contact.name}: {contact.number}
           <StyledDeleteButton
             type="button"
-            onClick={() => onDelete(contact.id)}
+            onClick={() => handleDelete(contact.id)}
           >
             Delete
           </StyledDeleteButton>
@@ -31,5 +31,5 @@ ContactsList.propTypes = {
       number: propTypes.string.isRequired,
     })
   ),
-  onDelete: propTypes.func.isRequired,
+  handleDelete: propTypes.func.isRequired,
 };

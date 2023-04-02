@@ -1,7 +1,7 @@
 import propTypes from 'prop-types';
 import { InputParamether, Title } from './FilteredItem.styled';
 
-export const FilteredItem = ({ filter, onhandleChange }) => {
+export const FilteredItem = ({ filter, handleChange }) => {
   return (
     <div>
       <Title>Find contacts by Name</Title>
@@ -10,7 +10,7 @@ export const FilteredItem = ({ filter, onhandleChange }) => {
         name="filter"
         placeholder="Enter filter paramether"
         value={filter}
-        onChange={onhandleChange}
+        onChange={handleChange}
       />
     </div>
   );
@@ -18,5 +18,5 @@ export const FilteredItem = ({ filter, onhandleChange }) => {
 
 FilteredItem.propTypes = {
   filter: propTypes.string.isRequired,
-  onhandleChange: propTypes.func.isRequired,
+  handleChange: propTypes.func.isRequired,
 };
