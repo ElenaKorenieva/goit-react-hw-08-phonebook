@@ -1,31 +1,44 @@
-import { useState } from 'react';
-import propTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { nanoid } from 'nanoid';
 import { FormEl, InputEl, LabelEl, SubmitBtn } from './Form.styled';
+import { addContacts } from 'redux/contactsSlice';
 
-export const Form = ({ handleSubmit }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+export const Form = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts);
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  });
+
+  const [form, setForm] = useState({
+    name: '',
+    number: '',
+  });
 
   const reset = () => {
-    setName('');
-    setNumber('');
+    setForm({
+      name: '',
+      number: '',
+    });
   };
 
-  const handleChangeName = e => {
-    const { value } = e.target;
-    setName(value);
-  };
-
-  const handleChangePhone = e => {
-    const { value } = e.target;
-    setNumber(value);
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setForm(prevForm => ({ ...prevForm, [name]: value }));
   };
 
   const handleFormSubmit = e => {
     e.preventDefault();
     reset();
-    handleSubmit({ name, number });
+    const newContact = { ...form, id: nanoid() };
+    contacts.some(contact => contact.name === form.name)
+      ? alert('The contact is already in the contact list')
+      : dispatch(addContacts(newContact));
   };
+
+  const { name, number } = form;
 
   return (
     <FormEl onSubmit={handleFormSubmit}>
@@ -38,7 +51,7 @@ export const Form = ({ handleSubmit }) => {
         required
         placeholder="Enter name"
         value={name}
-        onChange={handleChangeName}
+        onChange={handleChange}
       />
       <LabelEl>Number</LabelEl>
       <InputEl
@@ -49,13 +62,9 @@ export const Form = ({ handleSubmit }) => {
         required
         placeholder="Enter phone"
         value={number}
-        onChange={handleChangePhone}
+        onChange={handleChange}
       />
       <SubmitBtn type="submit">Add contact</SubmitBtn>
     </FormEl>
   );
-};
-
-Form.propTypes = {
-  handleSubmit: propTypes.func.isRequired,
 };

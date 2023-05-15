@@ -15,7 +15,8 @@ export const StyledContactsItem = styled.li`
 `;
 
 export const StyledDeleteButton = styled.button`
-  background: lightblue;
+  background: #5ea5bd;
+  color: white;
   outline: none;
   border: 1px solid #d3d3d3;
   border-radius: 5px;
@@ -27,4 +28,14 @@ export const StyledDeleteButton = styled.button`
     color: #d3d3d3;
     background-size: cover;
   }
+`;
+
+export const StyledIcon = styled.span`
+  width: 25px;
+  height: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #5ea5bd;
+  border-radius: 50%;
 `;
