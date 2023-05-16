@@ -11,6 +11,7 @@ export const StyledContactsList = styled.ul`
 
 export const StyledContactsItem = styled.li`
   display: flex;
+  justify-content: space-between;
   gap: 20px;
 `;
 

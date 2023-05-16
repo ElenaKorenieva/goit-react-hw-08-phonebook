@@ -1,16 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { nanoid } from 'nanoid';
 import { FormEl, InputEl, LabelEl, SubmitBtn } from './Form.styled';
-import { addContacts } from 'redux/contactsSlice';
+import { addContacts } from 'redux/operations';
+import { selectorContacts } from 'redux/selectors';
 
 export const Form = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  });
+  const contacts = useSelector(selectorContacts);
 
   const [form, setForm] = useState({
     name: '',
@@ -32,7 +28,7 @@ export const Form = () => {
   const handleFormSubmit = e => {
     e.preventDefault();
     reset();
-    const newContact = { ...form, id: nanoid() };
+    const newContact = { ...form };
     contacts.some(contact => contact.name === form.name)
       ? alert('The contact is already in the contact list')
       : dispatch(addContacts(newContact));
