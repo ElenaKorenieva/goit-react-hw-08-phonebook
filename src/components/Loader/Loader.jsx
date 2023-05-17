@@ -1,6 +1,6 @@
 import { RotatingLines } from 'react-loader-spinner';
 import { useSelector } from 'react-redux';
-import { selectorLoader } from 'redux/selectors';
+import { selectorLoader } from 'redux/Contacts/selectors';
 import { LoaderContainer } from './Loader.styled';
 
 const Loader = ({ children }) => {

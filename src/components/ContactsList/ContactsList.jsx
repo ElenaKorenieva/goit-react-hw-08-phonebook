@@ -7,7 +7,7 @@ import {
   StyledIcon,
 } from './ContactsList.styled';
 
-import { selectorContacts, selectorFilter } from 'redux/selectors';
+import { selectorContacts, selectorFilter } from 'redux/Contacts/selectors';
 import { useEffect } from 'react';
 import { deleteContacts, getContacts } from 'redux/operations';
 

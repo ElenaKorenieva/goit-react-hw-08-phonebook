@@ -1,19 +1,19 @@
-import { Form } from 'components/Form';
-import { FilteredItem } from 'components/FilteredItem';
-import { ContactsList } from 'components/ContactsList';
-import { Container } from 'App.styled';
-import Loader from 'components/Loader/Loader';
+import Authorization from 'pages/Auth/Authorization';
+import UserLogin from 'pages/Auth/UserLogin';
+import UserRegister from 'pages/Auth/UserRegister';
+// import Phonebook from 'pages/Phonebook/Phonebook';
+import { Route, Routes } from 'react-router-dom';
 
 export const App = () => {
   return (
-    <Container>
-      <Loader>
-        <h1>Phonebook</h1>
-        <Form />
-        <h2> Contacts</h2>
-        <FilteredItem />
-        <ContactsList />
-      </Loader>
-    </Container>
+    // <Routes>
+    //   <Route path="/goit-react-hw-08-phonebook" element={<Phonebook />} />
+    // </Routes>
+    <Routes>
+      <Route path="/" element={<Authorization />}>
+        <Route index element={<UserRegister />} />
+        <Route path="login" element={<UserLogin />} />
+      </Route>
+    </Routes>
   );
 };
