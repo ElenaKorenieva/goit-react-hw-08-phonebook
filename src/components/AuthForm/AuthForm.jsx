@@ -1,18 +1,9 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  FormEl,
-  InputEl,
-  LabelEl,
-  SubmitBtn,
-} from 'components/Form/Form.styled';
+import { FormEl, InputEl, SubmitBtn } from 'components/Form/Form.styled';
 
-const AuthForm = ({ onSubmit, submitTitle }) => {
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
+const AuthForm = ({ onSubmit, submitTitle, options, initialState }) => {
+  const [form, setForm] = useState(initialState);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -22,36 +13,24 @@ const AuthForm = ({ onSubmit, submitTitle }) => {
   const handleSubmit = e => {
     e.preventDefault();
     onSubmit(form);
+    setForm(initialState);
   };
 
   return (
     <FormEl onSubmit={handleSubmit}>
-      <LabelEl>Name</LabelEl>
-      <InputEl
-        type="text"
-        name="name"
-        required
-        placeholder="Enter name..."
-        value={form.name}
-        onChange={handleChange}
-      />
-      <LabelEl>Email</LabelEl>
-      <InputEl
-        type="email"
-        name="email"
-        required
-        placeholder="Enter email..."
-        value={form.email}
-        onChange={handleChange}
-      />
-      <LabelEl>Password</LabelEl>
-      <InputEl
-        type="password"
-        name="password"
-        placeholder="Enter password..."
-        value={form.password}
-        onChange={handleChange}
-      />
+      {options.map(option => (
+        <label key={option.name}>
+          <h2>{option.label}</h2>
+          <InputEl
+            type={option.type}
+            name={option.name}
+            required
+            placeholder={option.placeholder}
+            value={form[option.name]}
+            onChange={handleChange}
+          />
+        </label>
+      ))}
       <SubmitBtn type="submit">{submitTitle}</SubmitBtn>
     </FormEl>
   );
@@ -62,4 +41,5 @@ export default AuthForm;
 AuthForm.propTypes = {
   onSubmit: PropTypes.func,
   submitTitle: PropTypes.string,
+  options: PropTypes.array,
 };

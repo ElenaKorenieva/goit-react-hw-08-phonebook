@@ -6,10 +6,10 @@ import {
   StyledDeleteButton,
   StyledIcon,
 } from './ContactsList.styled';
-
-import { selectorContacts, selectorFilter } from 'redux/Contacts/selectors';
 import { useEffect } from 'react';
-import { deleteContacts, getContacts } from 'redux/operations';
+import { refreshOperation } from 'redux/Auth/authOperations';
+import { deleteContacts, getContacts } from 'redux/Contacts/contactsOperations';
+import { selectorContacts, selectorFilter } from 'redux/Contacts/selectors';
 
 export const ContactsList = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ export const ContactsList = () => {
     return contacts.filter(
       contact =>
         contact.name.toLowerCase().includes(filter.toLowerCase()) ||
-        contact.phone.includes(filter)
+        contact.number.includes(filter)
     );
   };
 
@@ -29,17 +29,18 @@ export const ContactsList = () => {
 
   useEffect(() => {
     dispatch(getContacts());
+    //dispatch(refreshOperation()).then(() => dispatch(getContacts()));
   }, [dispatch]);
 
   return (
     <div>
       <StyledContactsList>
-        {filteredContactsList.map((contact, id) => (
-          <StyledContactsItem key={id}>
+        {filteredContactsList.map(contact => (
+          <StyledContactsItem key={contact.id}>
             <StyledIcon>
               <FaUserAlt />
             </StyledIcon>
-            {contact.name}: {contact.phone}
+            {contact.name}: {contact.number}
             <StyledDeleteButton
               type="button"
               onClick={() => dispatch(deleteContacts(contact.id))}

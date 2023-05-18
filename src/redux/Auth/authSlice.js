@@ -25,12 +25,9 @@ const authSlice = createSlice({
       })
       .addCase(registerOperation.fulfilled, (state, { payload }) => {
         return {
+          ...state,
+          ...payload,
           isAuth: true,
-          isLoading: false,
-          user: payload.user,
-          token: payload.token,
-          isRefreshing: false,
-          error: null,
         };
       })
       .addCase(registerOperation.rejected, (state, { payload }) => {
