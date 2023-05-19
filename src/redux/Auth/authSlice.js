@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit/dist';
+import { createSlice } from '@reduxjs/toolkit';
 import {
   loginOperation,
   logoutOperation,
@@ -18,6 +18,7 @@ const initialState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
+
   extraReducers: builder => {
     builder
       .addCase(registerOperation.pending, state => {
@@ -64,23 +65,21 @@ const authSlice = createSlice({
         state.error = payload;
       })
       .addCase(refreshOperation.pending, state => {
-        state.isLoading = true;
         state.isRefreshing = true;
       })
       .addCase(refreshOperation.fulfilled, (state, { payload }) => {
         return {
+          ...state,
           isAuth: true,
           isLoading: false,
-          user: payload.user,
-          token: payload.token,
+          user: payload,
           isRefreshing: false,
-          error: null,
         };
       })
       .addCase(refreshOperation.rejected, (state, { payload }) => {
         state.isLoading = false;
-        state.error = payload;
         state.isRefreshing = false;
+        state.error = payload;
       });
   },
 });

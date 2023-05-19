@@ -28,8 +28,8 @@ export const ContactsList = () => {
   const filteredContactsList = filteredContacts();
 
   useEffect(() => {
-    dispatch(getContacts());
-    //dispatch(refreshOperation()).then(() => dispatch(getContacts()));
+    //dispatch(getContacts());
+    dispatch(refreshOperation()).then(() => dispatch(getContacts()));
   }, [dispatch]);
 
   return (

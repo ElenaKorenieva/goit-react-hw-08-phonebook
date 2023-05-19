@@ -10,16 +10,13 @@ import stringAvatar from 'utils/avatarFn';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from 'redux/Auth/authSelectors';
 import { logoutOperation } from 'redux/Auth/authOperations';
-import { useNavigate } from 'react-router-dom';
 
 const UserMenu = () => {
   const userName = useSelector(selectUser) || '';
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const logoutUser = () => {
     dispatch(logoutOperation());
-    navigate('/');
   };
 
   return (
