@@ -6,9 +6,8 @@ import {
   StyledDeleteButton,
   StyledIcon,
 } from './ContactsList.styled';
-import { useEffect } from 'react';
-import { refreshOperation } from 'redux/Auth/authOperations';
-import { deleteContacts, getContacts } from 'redux/Contacts/contactsOperations';
+
+import { deleteContacts } from 'redux/Contacts/contactsOperations';
 import { selectorContacts, selectorFilter } from 'redux/Contacts/selectors';
 
 export const ContactsList = () => {
@@ -26,11 +25,6 @@ export const ContactsList = () => {
   };
 
   const filteredContactsList = filteredContacts();
-
-  useEffect(() => {
-    //dispatch(getContacts());
-    dispatch(refreshOperation()).then(() => dispatch(getContacts()));
-  }, [dispatch]);
 
   return (
     <div>

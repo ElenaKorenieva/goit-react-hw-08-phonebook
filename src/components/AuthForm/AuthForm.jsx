@@ -42,4 +42,5 @@ AuthForm.propTypes = {
   onSubmit: PropTypes.func,
   submitTitle: PropTypes.string,
   options: PropTypes.array,
+  initialState: PropTypes.object,
 };

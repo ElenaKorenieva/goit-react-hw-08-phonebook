@@ -68,13 +68,10 @@ const authSlice = createSlice({
         state.isRefreshing = true;
       })
       .addCase(refreshOperation.fulfilled, (state, { payload }) => {
-        return {
-          ...state,
-          isAuth: true,
-          isLoading: false,
-          user: payload,
-          isRefreshing: false,
-        };
+        state.isAuth = true;
+        state.isLoading = false;
+        state.user = payload;
+        state.isRefreshing = false;
       })
       .addCase(refreshOperation.rejected, (state, { payload }) => {
         state.isLoading = false;
